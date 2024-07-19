@@ -1,0 +1,46 @@
+import { useSelector } from "react-redux"
+import { RootSrate } from "../redux/store"
+import icon from './kindpng_6039982.png'
+import { useDispatch } from "react-redux"
+import { payMonyHandler } from "../redux/card-Slice"
+
+function ShowCard() {
+
+    const { bankCards } = useSelector((state: RootSrate)=> state.portalBank)
+    const dispatch = useDispatch()
+
+    const showCard = bankCards.map((card)=>{
+        return (
+            <div onClick={()=>dispatch(payMonyHandler(card))} key={`container-${card.id}`} className="flex flex-col gap-2 w-5/6 mx-auto p-3 rounded-lg mt-4 mb-4" style={{backgroundColor: card.backGround}}>
+                <div key={`iconAndName-${card.id}`} className="flex justify-between items-center">
+                    <img className="w-10 " src={icon} alt="" />
+                    <img key={`${card.id}`} className="w-10 rounded-md" src={card.imgCard} alt="Icon Bank" />
+                </div>
+                    <div key={`nameContainer-${card.id}`} className="flex gap-3"><div key={`nameTexet-${card.id}`}>Name:  </div> {card.nameCard}</div>
+                <div className="flex gap-3" key={`numberContainer-${card.id}`}>
+                    <div key={`cardNumber${card.id}`}>Number:</div>
+                    {card.numberCard.match(/.{1,4}/g)?.join(' ')}
+                </div>
+                <div key={`cvvcontainer-${card.id}`} className="flex gap-3"><div key={`cvvText-${card.id}`}>Cvv2:</div> {card.cvvCard}</div>
+                    <div key={`dateContainer-${card.id}`} className="flex gap-3">
+                       <div key={`expiryText-${card.id}`}>Expiry Date:</div>
+                        <div key={`expiryContainer-${card.id}`} className="flex gap-2">
+                            <div key={`year-${card.id}`}>{card.yearCard}</div>
+                            <div key={`slash${card.id}`}>/</div>
+                            <div key={`month${card.id}`}>{card.monthCard}</div>
+                        </div>
+                    </div>
+                <div key={`amount${card.id}`} className="flex gap-3"><div>Amount:</div>£ {card.amountCard.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</div> 
+            </div>
+        )
+    })
+    
+
+  return (
+    <div>
+        {showCard}
+    </div>
+  )
+}
+
+export default ShowCard
