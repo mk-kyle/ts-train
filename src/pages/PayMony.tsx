@@ -30,7 +30,7 @@ function PayMony() {
   const [ numberCardDes, setNumberCardDes] = useState<string>('')
   const [ password, setPassword] = useState<string>('')
 
-  function pushNotify() {
+  function pushNotify(): void {
     new Notify({
       title: 'PLease Fill All Bxes',
       text: 'Check To Be Fill and Available Bank',
@@ -40,9 +40,9 @@ function PayMony() {
 
   const now = new Date();
 
-  const options = { timeZone: "Asia/Tehran" };
+  const options: {timeZone: string} = { timeZone: "Asia/Tehran" };
 
-  const formattedDate = now.toLocaleDateString("fa-IR", {
+  const formattedDate: string = now.toLocaleDateString("fa-IR", {
       ...options,
       hour: 'numeric',
       minute: 'numeric',
@@ -50,7 +50,7 @@ function PayMony() {
   });
 
 
-  const cardNumberHandler = (e:  React.KeyboardEvent<HTMLInputElement> & React.ChangeEvent<HTMLInputElement>) => {
+  const cardNumberHandler = (e:  React.KeyboardEvent<HTMLInputElement> & React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.value.length == 0 && e.which == 48) {
         e.preventDefault()
     } else if (e.target.value.length == 0 && e.which == 96) {
@@ -63,7 +63,7 @@ function PayMony() {
   
   
 
-  const inpValueImgHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const inpValueImgHandle = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const fourBankIndex: string = e.target.value[0]+e.target.value[1]+e.target.value[2]+e.target.value[3]
     const findCode = bankCode.find((card)=> card.code == +fourBankIndex)
     setNumberCardDes(e.target.value)
@@ -88,7 +88,7 @@ const passvordValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
   setPassword(e.target.value)
 }
 
-const payMonyHandler = () => {
+const payMonyHandler = (): void => {
   if (bankPay.amountCard) {
     if (numberCardDes.length == 16 && desImg && +amountDes <= +bankPay.amountCard && password.length > 5) {
         dispatch(setNewAmount({bankPayId, amountDes}))
@@ -116,7 +116,7 @@ const historyObj: History = {
   payTime: historyPayTime,
 }
 
-const bankPayId = bankPay.id
+const bankPayId: number | undefined = bankPay.id
 
   return (
     bankPay.amountCard ? <div>

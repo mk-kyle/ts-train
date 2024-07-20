@@ -9,7 +9,7 @@ function ShowCard() {
     const { bankCards } = useSelector((state: RootSrate)=> state.portalBank)
     const dispatch = useDispatch()
 
-    const showCard = bankCards.map((card)=>{
+    const showCard = bankCards.map((card): JSX.Element => {
         return (
             <div onClick={()=>dispatch(payMonyHandler(card))} key={`container-${card.id}`} className="flex flex-col gap-2 w-5/6 mx-auto p-3 rounded-lg mt-4 mb-4" style={{backgroundColor: card.backGround}}>
                 <div key={`iconAndName-${card.id}`} className="flex justify-between items-center">

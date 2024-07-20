@@ -4,7 +4,7 @@ import { RootSrate } from "../redux/store"
 function History() {
 
   const { bankHistory } = useSelector((state: RootSrate) => state.portalBank)
-  const showHistory = bankHistory.map((card)=> {
+  const showHistory = bankHistory.map((card): JSX.Element => {
     return (
       <div className="text-white bg-[#ffff001b] border-yellow-400 border-2 rounded-lg p-3 flex flex-col gap-3 mb-4">
         <div className="flex justify-between gap-10">

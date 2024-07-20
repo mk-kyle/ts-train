@@ -34,7 +34,7 @@ function AddCard() {
   const dispatch = useDispatch()
   
 
-   function pushNotify() {
+   function pushNotify(): void {
     new Notify({
       title: 'PLease Fill All Bxes',
       text: 'Check To Be Fill and Available Bank',
