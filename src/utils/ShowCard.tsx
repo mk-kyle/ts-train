@@ -37,8 +37,13 @@ function ShowCard() {
     
 
   return (
+    bankCards.length !== 0 ?
     <div>
         {showCard}
+    </div>
+    : <div className="flex flex-col gap-2 w-5/6 mx-auto p-3 rounded-lg mt-4 mb-4 bg-white h-56">
+        <img className="w-10" src={icon} alt="" />
+        <p className="text-black flex justify-center items-center font-medium text-4xl w-full h-full mb-4">No Card !</p>
     </div>
   )
 }

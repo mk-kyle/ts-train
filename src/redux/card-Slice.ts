@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { NewCard } from "../pages/AddCard";
+import { History } from "../pages/PayMony";
 
 
 import Eghtesad from "./images/Eghtesad Novin.png.jpeg";
@@ -32,12 +33,14 @@ interface PortalState {
         backGround?: string,
         imgCard?: string | undefined, 
     },
+    bankHistory: History[],
     bankCode: {bankName: string, code:number, url:string, bg: string }[],
 }
 
 const initialState: PortalState = {
     bankCards: [],
     bankPay: {},
+    bankHistory: [],
     bankCode: [
         {
             bankName: "Maskan",
@@ -146,13 +149,17 @@ const PosralBankSlice = createSlice({
             state.bankCards.map((card)=> {
                 if (actions.payload.bankPayId == card.id) {
                     card.amountCard = String((+card.amountCard) - (+actions.payload.amountDes))
-                    console.log(card.amountCard);
                     
                 }
             })
-        }
-    }
+        },
+        addHistoryHandler: (state, actions)=> {
+            state.bankHistory = [...state.bankHistory, actions.payload]
+            console.log(state.bankHistory);
+            
+        },
+    },
 })
 
-export const  { addBankCardHandler, payMonyHandler, setNewAmount } = PosralBankSlice.actions
+export const  { addBankCardHandler, payMonyHandler, setNewAmount, addHistoryHandler } = PosralBankSlice.actions
 export default PosralBankSlice.reducer 

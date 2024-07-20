@@ -2,12 +2,33 @@ import { useSelector } from "react-redux"
 import { RootSrate } from "../redux/store"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { setNewAmount } from "../redux/card-Slice"
+import { addHistoryHandler, setNewAmount } from "../redux/card-Slice"
 import Notify from 'simple-notify'
 import 'simple-notify/dist/simple-notify.css'
 import PayMonyHelper from "../utils/PayMonyHelper"
 
+
+export interface History {
+  desImg: string | undefined,
+  amountDes: string,
+  numberCardDes: string,
+  imgCard: string | undefined,
+  numberCard: string | undefined,
+  payTime: string,
+}
+
 function PayMony() {
+
+
+  const { bankPay } = useSelector((state: RootSrate)=> state.portalBank)
+  const { bankCode } = useSelector((state: RootSrate)=> state.portalBank)
+  const dispatch = useDispatch()
+
+
+  const [ desImg, setDesImg] = useState<string | undefined>(undefined)
+  const [ amountDes, setAmountDes] = useState<string>('')
+  const [ numberCardDes, setNumberCardDes] = useState<string>('')
+  const [ password, setPassword] = useState<string>('')
 
   function pushNotify() {
     new Notify({
@@ -17,14 +38,17 @@ function PayMony() {
     })
   } 
 
-  const { bankPay } = useSelector((state: RootSrate)=> state.portalBank)
-  const { bankCode } = useSelector((state: RootSrate)=> state.portalBank)
-  const dispatch = useDispatch()
+  const now = new Date();
 
-  const [ desImg, setDesImg] = useState<string | undefined>(undefined)
-  const [ amountDes, setAmountDes] = useState<string>('')
-  const [ numberCardDes, setNumberCardDes] = useState<string>('')
-  const [ password, setPassword] = useState<string>('')
+  const options = { timeZone: "Asia/Tehran" };
+
+  const formattedDate = now.toLocaleDateString("fa-IR", {
+      ...options,
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+  });
+
 
   const cardNumberHandler = (e:  React.KeyboardEvent<HTMLInputElement> & React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length == 0 && e.which == 48) {
@@ -36,6 +60,7 @@ function PayMony() {
         e.preventDefault()
     }
   }
+  
   
 
   const inpValueImgHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +92,7 @@ const payMonyHandler = () => {
   if (bankPay.amountCard) {
     if (numberCardDes.length == 16 && desImg && +amountDes <= +bankPay.amountCard && password.length > 5) {
         dispatch(setNewAmount({bankPayId, amountDes}))
+        dispatch(addHistoryHandler(historyObj))
         setDesImg(undefined)
         setAmountDes('')
         setNumberCardDes('')
@@ -79,6 +105,16 @@ const payMonyHandler = () => {
   }
 }
 
+const historyPayTime = formattedDate 
+
+const historyObj: History = {
+  amountDes: amountDes,
+  desImg: desImg,
+  numberCardDes: numberCardDes,
+  numberCard: bankPay.numberCard,
+  imgCard: bankPay.imgCard,
+  payTime: historyPayTime,
+}
 
 const bankPayId = bankPay.id
 
