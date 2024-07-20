@@ -12,11 +12,11 @@ function History() {
           <img className="rounded-md w-10" src={card.desImg} alt="" />
         </div>
         <div className="flex justify-between">
-          <p>From: {card.numberCard}</p>
-          <p>To: {card.numberCardDes}</p>
+          <p>From: {card.numberCard && card.numberCard.match(/.{1,4}/g)?.join(' ')}</p>
+          <p>To: {card.numberCardDes.match(/.{1,4}/g)?.join(' ')}</p>
         </div>  
         <div className="flex justify-between">
-          <p>Amount: £ {card.amountDes}</p>
+          <p>Amount: £ {card.amountDes.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</p>
           <p>Date Pay: {card.payTime}</p>
         </div>
       </div>
